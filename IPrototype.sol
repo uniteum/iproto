@@ -29,28 +29,40 @@ interface IPrototype {
      * @notice Predicts the clone address for a given args hash and variant.
      * @param argshash Hash of the ABI-encoded initialization args.
      * @param variant Variant identifier mixed into the salt.
+     * @return exists Whether the clone has already been deployed.
      * @return home The deterministic clone address.
      * @return salt The CREATE2 salt derived from `argshash` and `variant`.
      */
-    function made(bytes32 argshash, uint256 variant) external view returns (address home, bytes32 salt);
+    function made(bytes32 argshash, uint256 variant)
+        external
+        view
+        returns (bool exists, address home, bytes32 salt);
 
     /**
      * @notice Predicts the clone address for initialization data.
      * @dev Salt is derived from `keccak256(abi.encode(args))` xor `variant`.
      * @param args Initialization calldata for the clone.
      * @param variant Variant identifier mixed into the salt.
+     * @return exists Whether the clone has already been deployed.
      * @return home Deterministic clone address.
      * @return salt The CREATE2 salt derived from args and variant.
      */
-    function made(bytes calldata args, uint256 variant) external view returns (address home, bytes32 salt);
+    function made(bytes calldata args, uint256 variant)
+        external
+        view
+        returns (bool exists, address home, bytes32 salt);
 
     /**
      * @notice Deploys a deterministic minimal proxy clone.
      * @param args Initialization data passed to the clone.
      * @param variant Variant identifier mixed into the salt.
+     * @return exists Whether the clone already existed before this call (true means no new deployment).
      * @return home The deployed clone address.
+     * @return salt The CREATE2 salt derived from args and variant.
      */
-    function make(bytes calldata args, uint256 variant) external returns (address home);
+    function make(bytes calldata args, uint256 variant)
+        external
+        returns (bool exists, address home, bytes32 salt);
 
     /**
      * @notice Initialize a newly deployed clone.
