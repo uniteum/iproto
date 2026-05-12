@@ -33,10 +33,7 @@ interface IPrototype {
      * @return home The deterministic clone address.
      * @return salt The CREATE2 salt derived from `argshash` and `variant`.
      */
-    function made(bytes32 argshash, uint256 variant)
-        external
-        view
-        returns (bool exists, address home, bytes32 salt);
+    function made(bytes32 argshash, uint256 variant) external view returns (bool exists, address home, bytes32 salt);
 
     /**
      * @notice Predicts the clone address for initialization data.
@@ -47,10 +44,7 @@ interface IPrototype {
      * @return home Deterministic clone address.
      * @return salt The CREATE2 salt derived from args and variant.
      */
-    function made(bytes calldata args, uint256 variant)
-        external
-        view
-        returns (bool exists, address home, bytes32 salt);
+    function made(bytes calldata args, uint256 variant) external view returns (bool exists, address home, bytes32 salt);
 
     /**
      * @notice Deploys a deterministic minimal proxy clone.
@@ -60,9 +54,7 @@ interface IPrototype {
      * @return home The deployed clone address.
      * @return salt The CREATE2 salt derived from args and variant.
      */
-    function make(bytes calldata args, uint256 variant)
-        external
-        returns (bool exists, address home, bytes32 salt);
+    function make(bytes calldata args, uint256 variant) external returns (bool exists, address home, bytes32 salt);
 
     /**
      * @notice Initialize a newly deployed clone.
@@ -73,7 +65,12 @@ interface IPrototype {
     function zzInit(bytes calldata args, uint256 variant) external;
 
     /**
-     * @notice Error raised when a caller lacks permission.
+     * @notice Emit when a clone is made.
+     */
+    event Made(address indexed home, bytes32 indexed salt, uint256 indexed variant);
+
+    /**
+     * @notice Raised when a caller lacks permission.
      */
     error Unauthorized();
 }
